@@ -11,10 +11,14 @@ router_for_coin_prices = Router()  # [3]
 def get_info_price() -> Dict:
     prices = {}
     querystring_tickers['limit'] = "100"
+    start = querystring_tickers['start']
+    querystring_tickers['start'] = "0"
 
     coin_prices = site_api.get_data_tickers()
     response = coin_prices(url, headers, querystring_tickers, "tickers").text
+
     querystring_tickers['limit'] = "15"
+    querystring_tickers['start'] = start
 
     data = json.loads(response)
     for info in data['data']:
