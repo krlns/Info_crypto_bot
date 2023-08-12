@@ -25,7 +25,6 @@ async def scroll(callback: CallbackQuery):
     await update_coins(callback.message)
 
 
-
 #@router_get_coin_prices.callback_query(F.data == "list_next")
 #async def scroll_forward(callback: CallbackQuery):
 #    edit_num = int(querystring_tickers['start']) + 15

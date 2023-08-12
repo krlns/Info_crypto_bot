@@ -27,13 +27,13 @@ def get_coin_info() -> Dict:
     return data["data"]
 
 
-def generate_markets_kb() ->  InlineKeyboardBuilder:
+def generate_markets_kb() -> InlineKeyboardBuilder:
     response = get_markets_info()
     markets_name_list = []
 
     markets = InlineKeyboardBuilder()
-    for i in range(15):
-        if response[i]['name'] not in markets_name_list:
+    for i in range(0, 14 if len(response) > 15 else len(response) - 1):
+        if response[i]['base'] not in markets_name_list:
             markets_name_list.append(response[i]['name'])  # Removes duplicate names of cryptocurrency exchanges
             markets.button(text=f"{response[i]['name']}", callback_data=f"market_{response[i]['name']}")
     markets.adjust(3)
