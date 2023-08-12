@@ -14,22 +14,31 @@ async def update_coins(message: Message):
 
 @router_get_coin_prices.callback_query(F.data == "coin_info_prices")
 async def get_pricing_information(callback: CallbackQuery):
+    querystring_tickers['start'] = "0"
     await callback.message.answer("Выбери монету", reply_markup=generate_coin_kb().as_markup())
 
 
-@router_get_coin_prices.callback_query(F.data == "list_next")
-async def scroll_forward(callback: CallbackQuery):
-    edit_num = int(querystring_tickers['start']) + 15
-    querystring_tickers['start'] = str(edit_num)
+@router_get_coin_prices.callback_query(F.data.startswith("page:"))
+async def scroll(callback: CallbackQuery):
+    number_page = callback.data.split(':')[1]
+    querystring_tickers['start'] = str(number_page)
     await update_coins(callback.message)
 
 
-@router_get_coin_prices.callback_query(F.data == "list_back")
-async def scroll_back(callback: CallbackQuery):
-    if int(querystring_tickers['start']) != 0:
-        edit_num = int(querystring_tickers['start']) - 15
-        querystring_tickers['start'] = str(edit_num)
-        await update_coins(callback.message)
+
+#@router_get_coin_prices.callback_query(F.data == "list_next")
+#async def scroll_forward(callback: CallbackQuery):
+#    edit_num = int(querystring_tickers['start']) + 15
+#    querystring_tickers['start'] = str(edit_num)
+#    await update_coins(callback.message)
+#
+#
+#@router_get_coin_prices.callback_query(F.data == "list_back")
+#async def scroll_back(callback: CallbackQuery):
+#    if int(querystring_tickers['start']) != 0:
+#        edit_num = int(querystring_tickers['start']) - 15
+#        querystring_tickers['start'] = str(edit_num)
+#        await update_coins(callback.message)
 
 
 @router_get_coin_prices.callback_query(F.data.startswith("id_"))

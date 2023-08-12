@@ -4,14 +4,18 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from site_API.core import headers, querystring_tickers, querystring_markets, site_api, url
 
 
-def generate_coin_kb() ->  InlineKeyboardBuilder:
+def generate_coin_kb() -> InlineKeyboardBuilder:
     response = get_coin_info()
+
+    left = int(querystring_tickers['start']) - 15 if int(querystring_tickers['start']) != 0 else \
+        querystring_tickers['start']
+    right = int(querystring_tickers['start']) + 15
 
     coins = InlineKeyboardBuilder()
     for i in range(len(response)):
         coins.button(text=f"{response[i]['symbol']}", callback_data=f"id_{response[i]['id']}")
-    coins.button(text="Назад ⬅️", callback_data="list_back")
-    coins.button(text="➡️ Вперед", callback_data="list_next")
+    coins.button(text="Назад ⬅️", callback_data=f"page:{left}")
+    coins.button(text="➡️ Вперед", callback_data=f"page:{right}")
     coins.adjust(3)
     return coins
 
