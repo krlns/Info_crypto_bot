@@ -32,7 +32,7 @@ def generate_markets_kb() -> InlineKeyboardBuilder:
     markets_name_list = []
 
     markets = InlineKeyboardBuilder()
-    for i in range(0, 14 if len(response) > 15 else len(response) - 1):
+    for i in range(0, 14 if len(response) > 15 else len(response)):
         if response[i]['base'] not in markets_name_list:
             markets_name_list.append(response[i]['name'])  # Removes duplicate names of cryptocurrency exchanges
             markets.button(text=f"{response[i]['name']}", callback_data=f"market_{response[i]['name']}")
